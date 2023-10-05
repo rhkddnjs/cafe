@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ktdsuniversity.edu.bbs.service.BoardService;
+import com.ktdsuniversity.edu.bbs.service.BoardServiceImpl;
 import com.ktdsuniversity.edu.bbs.vo.BoardListVO;
 import com.ktdsuniversity.edu.bbs.vo.BoardVO;
 import com.ktdsuniversity.edu.beans.FileHandler;
@@ -41,7 +44,7 @@ import jakarta.validation.Valid;
 
 @Controller
 public class BoardController {
-	
+	private Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
 	@Autowired
 	private FileHandler fileHandler;
 	
@@ -76,13 +79,13 @@ public class BoardController {
 		// 요청자의 IP 정보를 ipAddr 변수에 할당한다.
 		boardVO.setIpAddr(request.getRemoteAddr());
 		
-		System.out.println("제목: " + boardVO.getSubject());
-		System.out.println("이메일: " + boardVO.getEmail());
-		System.out.println("내용: " + boardVO.getContent());
-		System.out.println("등록일: " + boardVO.getCrtDt());
-		System.out.println("수정일: " + boardVO.getMdfyDt());
-		System.out.println("FileName: " + boardVO.getFileName());
-		System.out.println("OriginFileName: " + boardVO.getOriginFileName());
+		logger.debug("제목: " + boardVO.getSubject());
+		logger.debug("이메일: " + boardVO.getEmail());
+		logger.debug("내용: " + boardVO.getContent());
+		logger.debug("등록일: " + boardVO.getCrtDt());
+		logger.debug("수정일: " + boardVO.getMdfyDt());
+		logger.debug("FileName: " + boardVO.getFileName());
+		logger.debug("OriginFileName: " + boardVO.getOriginFileName());
 		
 		ModelAndView modelAndView = new ModelAndView();
 		
@@ -162,14 +165,14 @@ public class BoardController {
 									  Model model,
 									  @RequestParam MultipartFile file,
 									  @SessionAttribute("_LOGIN_USER_") MemberVO memberVO) {
-		System.out.println("ID: " + boardVO.getId());
-		System.out.println("제목: " + boardVO.getSubject());
-		System.out.println("이메일: " + boardVO.getEmail());
-		System.out.println("내용: " + boardVO.getContent());
-		System.out.println("등록일: " + boardVO.getCrtDt());
-		System.out.println("수정일: " + boardVO.getMdfyDt());
-		System.out.println("FileName: " + boardVO.getFileName());
-		System.out.println("OriginFileName: " + boardVO.getOriginFileName());
+		logger.debug("ID: " + boardVO.getId());
+		logger.debug("제목: " + boardVO.getSubject());
+		logger.debug("이메일: " + boardVO.getEmail());
+		logger.debug("내용: " + boardVO.getContent());
+		logger.debug("등록일: " + boardVO.getCrtDt());
+		logger.debug("수정일: " + boardVO.getMdfyDt());
+		logger.debug("FileName: " + boardVO.getFileName());
+		logger.debug("OriginFileName: " + boardVO.getOriginFileName());
 		
 		ModelAndView modelAndView = new ModelAndView();
 		if (bindingResult.hasErrors()) {

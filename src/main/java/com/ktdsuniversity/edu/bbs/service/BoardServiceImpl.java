@@ -2,6 +2,8 @@ package com.ktdsuniversity.edu.bbs.service;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +21,8 @@ import io.github.seccoding.web.mimetype.factory.ExtensionFilterFactory;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-
+	private Logger logger = LoggerFactory.getLogger(BoardServiceImpl.class);
+	
 	@Autowired
 	private FileHandler fileHandler;
 	
@@ -28,9 +31,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardListVO getAllBoard() {
-
-		System.out.println(boardDAO);
-		System.out.println(boardDAO.getClass().getSimpleName());
+		
+		logger.debug(boardDAO.toString());
+		logger.debug(boardDAO.getClass().getSimpleName());
 
 		BoardListVO boardListVO = new BoardListVO();
 		boardListVO.setBoardCnt(boardDAO.getBoardAllCount());
@@ -45,8 +48,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 업로드에 성공했다면!
 		if (storedFile != null) {
-			System.out.println(storedFile.getFileName());
-			System.out.println(storedFile.getFileSize());
+			logger.info(storedFile.getFileName());
 			System.out.println(storedFile.getRealFileName());
 			System.out.println(storedFile.getRealFilePath());
 			
