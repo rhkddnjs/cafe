@@ -13,6 +13,7 @@ import com.ktdsuniversity.edu.bbs.vo.BoardListVO;
 import com.ktdsuniversity.edu.bbs.vo.BoardVO;
 import com.ktdsuniversity.edu.beans.FileHandler;
 import com.ktdsuniversity.edu.beans.FileHandler.StoredFile;
+import com.ktdsuniversity.edu.exceptions.PageNotFoundException;
 
 import io.github.seccoding.web.mimetype.ExtFilter;
 import io.github.seccoding.web.mimetype.MimeType;
@@ -92,7 +93,7 @@ public class BoardServiceImpl implements BoardService {
 				// updateCount 가 0 이라는 것은
 				// 파라미터로 전달받은 id 값이 DB 에 존재하지 않는 것
 				// 이 경우, "잘못된 접근입니다." 라고 사용자에게 예외 메시지를 보내준다.
-				throw new IllegalArgumentException("잘못된 접근입니다.");
+				throw new PageNotFoundException("잘못된 접근입니다.");
 			}
 		}
 		// 예외가 발생하지 않았다면, 게시글 정보를 조회한다.
@@ -100,7 +101,7 @@ public class BoardServiceImpl implements BoardService {
 		if (boardVO == null) {
 			// 파라미터로 전달받은 id 값이 DB 에게 존재하지 않을 경우
 			// 잘못된 접근입니다. 라고 사용자에게 예외 메시지를 보내준다.
-			throw new IllegalArgumentException("잘못된 접근입니다.");
+			throw new PageNotFoundException("잘못된 접근입니다.");
 		}
 		return boardVO;
 	}

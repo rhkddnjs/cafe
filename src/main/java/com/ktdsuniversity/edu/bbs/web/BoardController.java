@@ -36,6 +36,7 @@ import com.ktdsuniversity.edu.bbs.service.BoardServiceImpl;
 import com.ktdsuniversity.edu.bbs.vo.BoardListVO;
 import com.ktdsuniversity.edu.bbs.vo.BoardVO;
 import com.ktdsuniversity.edu.beans.FileHandler;
+import com.ktdsuniversity.edu.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.member.vo.MemberVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -134,7 +135,7 @@ public class BoardController {
 		// 게시글 조회와 동일한 코드 호출
 		BoardVO boardVO = boardService.getOneBoard(id, false);
 		if (!boardVO.getEmail().equals(memberVO.getEmail())) {
-			throw new IllegalArgumentException("잘못된 접근입니다!");
+			throw new PageNotFoundException("잘못된 접근입니다!");
 		}
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("board/boardmodify");
@@ -148,7 +149,7 @@ public class BoardController {
 		// 파일 정보를 얻어오기 위해 게시글 정보를 조회한다.
 		BoardVO boardVO = boardService.getOneBoard(id, false);
 		if (boardVO == null) {
-			throw new IllegalArgumentException("잘못된 접근입니다.");
+			throw new PageNotFoundException("잘못된 접근입니다.");
 		}
 		
 		// 서버에 등록되어 있는 파일을 가져온다.
@@ -183,7 +184,7 @@ public class BoardController {
 		
 		BoardVO originBoardVO = boardService.getOneBoard(boardVO.getId(), false);
 		if (!originBoardVO.getEmail().equals(memberVO.getEmail())) {
-			throw new IllegalArgumentException("잘못된 접근입니다!");
+			throw new PageNotFoundException("잘못된 접근입니다!");
 		}
 
 		// 게시글 수정
@@ -210,7 +211,7 @@ public class BoardController {
 		
 		BoardVO originBoardVO = boardService.getOneBoard(id, false);
 		if (!originBoardVO.getEmail().equals(memberVO.getEmail())) {
-			throw new IllegalArgumentException("잘못된 접근입니다!");
+			throw new PageNotFoundException("잘못된 접근입니다!");
 		}
 
 		boolean isSuccess = boardService.deleteOneBoard(id);
