@@ -48,14 +48,8 @@ public class BoardController {
 	}
 	
 	@GetMapping("/board/write")
-	public String viewBoardWritePage(HttpSession session) {
-		// 로그인을 하지않고 url주소로 글쓰기주소로 들어갈 경우  들어가는걸 막고 로그인 페이지로 보냄
-		// 모든 코드에 적기 불편함 코드 하나가 바뀌면 전체다를 바꿔야함 그래서 인터셉터가 나옴
-		MemberVO memberVO = (MemberVO)session.getAttribute("_LOGIN_USER_");
-		if(memberVO == null) {
-			return "redirect:/member/login";
-		}
-		return "board/boardwrite";
+	public String viewBoardWritePage() {
+			return "board/boardwrite";
 	}
 	
 	@PostMapping("/board/write")
