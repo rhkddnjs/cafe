@@ -1,7 +1,19 @@
 package com.ktdsuniversity.edu.bbs.web;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -205,5 +217,95 @@ public class BoardController {
 		else {
 			return "redirect:/board/view?id=" + id;
 		}
+	}
+	@GetMapping("/board/excel/download")
+	public ResponseEntity<Resource> downloadExelFile(){
+		//엑셀로 만들 모든 게시글 조회
+		BoardListVO boardListVO = boardService.getAllBoard();
+		// xlsx 파일을 만든다.
+		Workbook workbook = new SXSSFWorkbook(-1);
+		// 엑셀 시트를 만든다.
+		Sheet sheet = workbook.createSheet("게시글 목록");
+		// 엑셀 시트에 행(row)를 만든다.
+		Row row= sheet.createRow(0);
+		// 행(row)에 열(cloumn)을 추가해 타이틀을 만든다.
+		Cell cell = row.createCell(0);
+		cell.setCellValue("번호");
+		
+		cell= row.createCell(1);
+		cell.setCellValue("제목");
+		
+		cell= row.createCell(2);
+		cell.setCellValue("첨부파일명");
+		
+		cell= row.createCell(3);
+		cell.setCellValue("작성자 이메일");
+		
+		cell= row.createCell(4);
+		cell.setCellValue("조회수");
+		
+		cell= row.createCell(5);
+		cell.setCellValue("등록일");
+		
+		cell= row.createCell(6);
+		cell.setCellValue("수정일");
+		// 게시글의 수 만큼 행(row)을 만들고 열(column)을 만들어 데이터를 추가한다.
+		List<BoardVO> boardList = boardListVO.getBoardList();
+		//두번째 줄부터 데이터를 만든다.
+		int rowIndex = 1;
+		for(BoardVO boardVO : boardList) {
+			row = sheet.createRow(rowIndex);
+			cell = row.createCell(0);
+			cell.setCellValue(boardVO.getId()+"");
+			
+			cell = row.createCell(1);
+			cell.setCellValue(boardVO.getSubject()+"");
+			
+			cell = row.createCell(2);
+			cell.setCellValue(boardVO.getOriginFileName());
+			
+			cell = row.createCell(3);
+			cell.setCellValue(boardVO.getEmail());
+			
+			cell = row.createCell(4);
+			cell.setCellValue(boardVO.getViewCnt()+"");
+			
+			cell = row.createCell(5);
+			cell.setCellValue(boardVO.getCrtDt());
+			
+			cell = row.createCell(6);
+			cell.setCellValue(boardVO.getMdfyDt());
+			rowIndex+=1;
+		}
+		// 작성한 문서를 파일로 만든다.
+		File excelFile = fileHandler.getStoredFile("게시글_목록.xlsx");
+		// OutputStream: Java에서 다른 시스템으로 데이터를 내보내는 것.
+		OutputStream os = null;
+		try {
+			//파일 데이터를 다른 시스템으로 내보낸다.
+			os = new FileOutputStream(excelFile);
+			workbook.write(os);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("엑셀파일을 만들 수 없습니다.");
+		}finally {
+			//stream 데이터는 반드시 finally가 필요하다.
+			//파일로 다 쓰고나면 엑셀 파일을 닫는다.
+			try {
+				workbook.close();} catch (IOException e) {}}
+			//OutputStream을 쓰고 닫는다.
+		if(os!=null) {
+			//메모리에 저장하고 있는 OutputStream을 외부로 내보낸다.
+			try {
+				os.flush();} catch (IOException e) {}
+			//OutputStream을 다 내보내고 나면 닫는다.
+			try {os.close();} catch (IOException e) {}
+		}
+		// 엑셀 파일을 다운로드 한다.
+		//파일명 생성
+		//다운로드할 파일명이 한글일 때 , URLEncoder라는 것을 사용한다.
+		String downloadFileName= URLEncoder.encode("게시글목록.xlsx",
+									Charset.defaultCharset());
+		//다운로드 시작
+		return fileHandler.getResponseEntity(excelFile, downloadFileName);
 	}
 }
