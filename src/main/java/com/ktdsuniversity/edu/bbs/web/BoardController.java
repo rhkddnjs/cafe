@@ -36,6 +36,7 @@ import com.ktdsuniversity.edu.bbs.service.BoardServiceImpl;
 import com.ktdsuniversity.edu.bbs.vo.BoardListVO;
 import com.ktdsuniversity.edu.bbs.vo.BoardVO;
 import com.ktdsuniversity.edu.beans.FileHandler;
+import com.ktdsuniversity.edu.exceptions.MakeXlsxFileException;
 import com.ktdsuniversity.edu.exceptions.PageNotFoundException;
 import com.ktdsuniversity.edu.member.vo.MemberVO;
 
@@ -290,7 +291,7 @@ public class BoardController {
 			os = new FileOutputStream(excelFile);
 			workbook.write(os);
 		} catch (IOException e) {
-			throw new IllegalArgumentException("엑셀파일을 만들 수 없습니다.");
+			throw new MakeXlsxFileException("엑셀파일을 만들 수 없습니다.");
 		}finally {
 			//stream 데이터는 반드시 finally가 필요하다.
 			//파일로 다 쓰고나면 엑셀 파일을 닫는다.

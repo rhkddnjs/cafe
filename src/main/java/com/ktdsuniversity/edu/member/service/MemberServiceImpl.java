@@ -4,6 +4,7 @@ import java.nio.channels.AlreadyBoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ktdsuniversity.edu.beans.SHA;
 import com.ktdsuniversity.edu.exceptions.AlreadyUseException;
@@ -25,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
 		int emailCount = memberDao.getEmailCount(email);
 		return emailCount == 0;
 	}
-	
+	@Transactional
 	@Override
 	public boolean createNewMember(MemberVO memberVO) {
 		int emailCount = memberDao.getEmailCount(memberVO.getEmail()); 
@@ -42,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
 		int insertCount = memberDao.createNewMember(memberVO);
 		return insertCount > 0;
 	}
-
+	
 	@Override
 	public MemberVO getMember(MemberVO memberVO) {
 		String salt = memberDao.getSalt(memberVO.getEmail());
@@ -68,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
 		memberDao.successLogin(memberVO);
 		return member;
 	}
-
+	@Transactional
 	@Override
 	public boolean deleteMe(String email) {
 		int deleteCount = memberDao.deleteMe(email);

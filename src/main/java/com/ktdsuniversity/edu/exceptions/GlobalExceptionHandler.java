@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
 		modelAndView.addObject("message",exception.getMessage());
 		return modelAndView;
 	}
-	@ExceptionHandler({FileNotExistsException.class, MakeXlsxFileException.class})
+	@ExceptionHandler({FileNotExistsException.class, MakeXlsxFileException.class ,RuntimeException.class})
 	public ModelAndView viewFileErrorPage(RuntimeException exception) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("error/500");
