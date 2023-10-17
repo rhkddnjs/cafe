@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
 	}
 	@ExceptionHandler({FileNotExistsException.class, MakeXlsxFileException.class ,RuntimeException.class})
 	public ModelAndView viewFileErrorPage(RuntimeException exception) {
+		exception.printStackTrace();
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("error/500");
 		modelAndView.addObject("message",exception.getMessage());
@@ -37,8 +38,8 @@ public class GlobalExceptionHandler {
 		modelAndView.addObject("message", exception.getMessage());
 		return modelAndView;
 	}
-	@ExceptionHandler(UserIdendifyNotMatchException.class)
-	public ModelAndView viewUserIdentifyNotMatchErrorPage(UserIdendifyNotMatchException exception) {
+	@ExceptionHandler(UserIdentifyNotMatchException.class)
+	public ModelAndView viewUserIdentifyNotMatchErrorPage(UserIdentifyNotMatchException exception) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("member/memberlogin");
 		modelAndView.addObject("memberVO",exception.getMemberVO());

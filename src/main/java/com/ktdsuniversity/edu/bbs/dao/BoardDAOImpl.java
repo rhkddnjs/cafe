@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ktdsuniversity.edu.bbs.vo.BoardVO;
+import com.ktdsuniversity.edu.bbs.vo.SearchBoardVO;
 
 @Repository
-public class BoardDAOImpl extends SqlSessionDaoSupport
-						  implements BoardDAO {
+public class BoardDAOImpl extends SqlSessionDaoSupport 
+                          implements BoardDAO {
 
 	@Autowired
 	@Override
@@ -20,18 +21,23 @@ public class BoardDAOImpl extends SqlSessionDaoSupport
 	}
 	
 	@Override
-	public int getBoardAllCount() {
-		return getSqlSession().selectOne("getBoardAllCount");
+	public int getBoardAllCount(SearchBoardVO searchBoardVO) {
+		return getSqlSession().selectOne("getBoardAllCount", searchBoardVO);
 	}
 
 	@Override
 	public List<BoardVO> getAllBoard() {
 		return getSqlSession().selectList("getAllBoard");
 	}
+	
+	@Override
+	public List<BoardVO> searchAllBoard(SearchBoardVO searchBoardVO) {
+		return getSqlSession().selectList("searchAllBoard", searchBoardVO);
+	}
 
 	@Override
 	public int createNewBoard(BoardVO boardVO) {
-		// getSqlSession().insert()는 insert 한 Row 의 개수를 반환!
+		// getSqlSession().insert()는 insert한 ROW의 개수를 반환한다.
 		return getSqlSession().insert("createNewBoard", boardVO);
 	}
 
@@ -41,12 +47,14 @@ public class BoardDAOImpl extends SqlSessionDaoSupport
 	}
 
 	@Override
-	public BoardVO getOneBoard(int id) {
-		return getSqlSession().selectOne("getOneBoard", id);
+	public BoardVO getOneBoardVO(int id) {
+		return getSqlSession().selectOne("getOneBoardVO", id);
 	}
 
 	@Override
 	public int updateOneBoard(BoardVO boardVO) {
+		// Query에게 전달할 수 있는 파라미터의 수는 1개다.
+		// 2개 이상은 보낼 수가 없다.
 		return getSqlSession().update("updateOneBoard", boardVO);
 	}
 

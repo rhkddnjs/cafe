@@ -1,6 +1,9 @@
 package com.ktdsuniversity.edu.bbs.vo;
 
+import com.ktdsuniversity.edu.member.vo.MemberVO;
+
 public class ReplyVO {
+		private int level;
 		private int replyId;
 		private int boardId;
 		private String email;
@@ -9,6 +12,21 @@ public class ReplyVO {
 		private String mdfyDt;
 		private int recommendCnt;
 		private int parentReplyId;
+		private MemberVO memberVO;
+		
+		
+		public MemberVO getMemberVO() {
+			return memberVO;
+		}
+		public void setMemberVO(MemberVO memberVO) {
+			this.memberVO = memberVO;
+		}
+		public int getLevel() {
+			return level;
+		}
+		public void setLevel(int level) {
+			this.level = level;
+		}
 		public int getReplyId() {
 			return replyId;
 		}

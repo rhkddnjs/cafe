@@ -1,6 +1,5 @@
 package com.ktdsuniversity.edu.exceptions;
 
-import com.ktdsuniversity.edu.member.vo.MemberVO;
 
 public class PageNotFoundException extends RuntimeException {
 
